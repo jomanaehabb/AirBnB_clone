@@ -15,15 +15,27 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """
-        initializing public instances necessary while creating objects
+        initializing public instances with attributes
+        necessary while creating objects
 
         Args:
             *args (optional):
-            **kwargs (optional):
+            **kwargs (optional, dict): attributes to create instance with
         """
-        self.id = str(uuid.uuid4())
-        self.created_at = (datetime.now())
-        self.updated_at = self.created_at
+        if kwargs:
+            for key, value in kwargs.items():
+                if key == "__class__":
+                    pass
+                elif key == "created_at":
+                    self.created_at = datetime.fromisoformat(value)
+                elif key == "updated_at":
+                    self.updated_at = datetime.fromisoformat(value)
+                else:
+                    setattr(self, key, value)
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = (datetime.now())
+            self.updated_at = self.created_at
 
     def __str__(self):
         """string represntation of the object"""
