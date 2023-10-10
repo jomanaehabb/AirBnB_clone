@@ -15,6 +15,7 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """
+
         initializing public instances with attributes
         necessary while creating objects
 
@@ -36,6 +37,17 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = (datetime.now())
             self.updated_at = self.created_at
+
+        initializing public instances necessary while creating objects
+
+        Args:
+            *args (optional):
+            **kwargs (optional):
+        """
+        self.id = str(uuid.uuid4())
+        self.created_at = (datetime.now())
+        self.updated_at = self.created_at
+
 
     def __str__(self):
         """string represntation of the object"""
