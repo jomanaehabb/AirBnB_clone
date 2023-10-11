@@ -43,17 +43,6 @@ class BaseModel:
             instance_dict = BaseModel.to_dict(self)
             storage.new(instance_dict)
 
-        initializing public instances necessary while creating objects
-
-        Args:
-            *args (optional):
-            **kwargs (optional):
-        """
-        self.id = str(uuid.uuid4())
-        self.created_at = (datetime.now())
-        self.updated_at = self.created_at
-
-
     def __str__(self):
         """string represntation of the object"""
         return (f"[{self.name}] ({self.id}) {self.__dict__}")
