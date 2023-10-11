@@ -1,13 +1,15 @@
 #!/usr/bin/python3
-
-import uuid
-from datetime import datetime
-
-
 """
     This module contains the base model of our other models
     which defines all common attributes/methods for other classes
 """
+
+# external packages
+import uuid
+from datetime import datetime
+
+# internal packages
+from models import storage
 
 
 class BaseModel:
@@ -17,7 +19,8 @@ class BaseModel:
         """
 
         initializing public instances with attributes
-        necessary while creating objects
+        necessary while creating objects, and save objects
+        into JSON file once they are created fro the first time
 
         Args:
             *args (optional):
@@ -37,6 +40,8 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = (datetime.now())
             self.updated_at = self.created_at
+            instance_dict = BaseModel.to_dict(self)
+            storage.new(instance_dict)
 
         initializing public instances necessary while creating objects
 
@@ -54,7 +59,11 @@ class BaseModel:
         return (f"[{self.name}] ({self.id}) {self.__dict__}")
 
     def save(self):
-        """updating update_at instance attribute"""
+        """
+        updating update_at instance attribute, and
+        saving the object to the JSON file
+        """
+        storage.save()
         self.updated_at = (datetime.now())
 
     def to_dict(self):
