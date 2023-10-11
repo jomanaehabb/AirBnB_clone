@@ -7,11 +7,13 @@ Our main purpose is to be able to build the core of AirBnB from scratch making u
 
 ## Description
 
-Our project is consisting from mutliple parts and systems integrated together to have the work done, so let us get through each one of them:
+Our project is consisting from mutliple parts and systems integrated together to have the work done, so let us get through each one of them:    
+
 **1. The console**
 - creating our data model
 - managing (create, update, destroy, etc) objects via a console command interpreter
-- storing and persisting objects to a file (JSON file)
+- storing and persisting objects to a file (JSON file)      
+
 ![first-img](https://s3.amazonaws.com/alx-intranet.hbtn.io/uploads/medias/2018/6/815046647d23428a14ca.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARDDGGGOUSBVO6H7D%2F20231011%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20231011T182905Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=cd495515f43060404f2f1c59134b89db86000a05b9b34bd7811cc0221f3b83cd)
 
 The first piece is to manipulate a powerful storage system. This storage engine will give us an abstraction between “My object” and “How they are stored and persisted”. This means: from your console code (the command interpreter itself) and from the front-end and RestAPI you will build later, you won’t have to pay attention (take care) of how your objects are stored.
