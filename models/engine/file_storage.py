@@ -4,6 +4,7 @@ This module handles issues of storage of data in JSON files
 """
 
 import json
+import copy
 
 
 class FileStorage:
@@ -22,14 +23,21 @@ class FileStorage:
         return self.__objects
 
     def new(self, obj):
-        """adds a new object to the JSON file"""
-        key = str(obj['__class__']) + '.' + str(obj['id'])
-        self.__objects[key] = obj
+        """adds a new object to __objects dict"""
+        key = obj.__class__.__name__ + '.' + obj.id
+        (self.__objects)[key] = obj
 
     def save(self):
-        """saves the JSON file from __objects dict"""
+        """
+        converting objs stored in __objects
+        to strings for saving into JSON file
+        """
+        objs_dict = copy.deepcopy(self.__objects)
+        for key, value in objs_dict.items():
+            objs_dict[key] = value.to_dict()
+
         with open(self.__file_path, "w") as f:
-            json.dump(self.__objects, f)
+            json.dump(objs_dict, f)
 
     def reload(self):
         """
@@ -38,8 +46,20 @@ class FileStorage:
         Raises:
             FileNotFoundError: if the JSON file doesn't exist
         """
+
+        from ..base_model import BaseModel
+
         try:
             with open(self.__file_path, "r") as f:
-                self.__objects = json.load(f)
+                loaded_objs = json.load(f)
         except FileNotFoundError:
-            pass
+            return
+
+        for key, value in loaded_objs.items():
+            self.__objects[key] = BaseModel(**value)
+
+    def destroy(self, obj):
+        """Removing a specific object permanently"""
+        obj_key = obj.__class__.__name__ + '.' + obj.id
+        (self.__objects).pop(obj_key)
+        self.save()
