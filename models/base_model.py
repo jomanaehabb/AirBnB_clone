@@ -7,6 +7,7 @@
 # external packages
 import uuid
 from datetime import datetime
+import copy
 
 # internal packages
 from models import storage
@@ -31,33 +32,32 @@ class BaseModel:
                 if key == "__class__":
                     pass
                 elif key == "created_at":
-                    self.created_at = datetime.fromisoformat(value)
+                    self.created_at = datetime.fromisoformat(str(value))
                 elif key == "updated_at":
-                    self.updated_at = datetime.fromisoformat(value)
+                    self.updated_at = datetime.fromisoformat(str(value))
                 else:
                     setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
             self.created_at = (datetime.now())
             self.updated_at = self.created_at
-            instance_dict = BaseModel.to_dict(self)
-            storage.new(instance_dict)
+            storage.new(self)
 
     def __str__(self):
         """string represntation of the object"""
-        return (f"[{self.name}] ({self.id}) {self.__dict__}")
+        return (f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}")
 
     def save(self):
         """
         updating update_at instance attribute, and
         saving the object to the JSON file
         """
+        self.updated_at = datetime.now()
         storage.save()
-        self.updated_at = (datetime.now())
 
     def to_dict(self):
         """generating a dictionary represnting the object preparing for JSON"""
-        object_dict_JSON = self.__dict__
+        object_dict_JSON = copy.deepcopy(self.__dict__)
         object_dict_JSON['created_at'] = (self.created_at).isoformat()
         object_dict_JSON['updated_at'] = (self.updated_at).isoformat()
         object_dict_JSON['__class__'] = self.__class__.__name__
