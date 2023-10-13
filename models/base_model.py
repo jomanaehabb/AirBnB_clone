@@ -9,6 +9,7 @@ import uuid
 from datetime import datetime
 import copy
 
+
 # internal packages
 from models import storage
 
@@ -43,6 +44,7 @@ class BaseModel:
             self.updated_at = self.created_at
             storage.new(self)
 
+
     def __str__(self):
         """string represntation of the object"""
         return (f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}")
@@ -54,6 +56,7 @@ class BaseModel:
         """
         self.updated_at = datetime.now()
         storage.save()
+
 
     def to_dict(self):
         """generating a dictionary represnting the object preparing for JSON"""
