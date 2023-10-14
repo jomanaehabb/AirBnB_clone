@@ -122,6 +122,52 @@ class HBNBCommand(cmd.Cmd):
             objs_list.append(str(objs_dict[key]))
         print(objs_list)
 
+    def do_update(self, line):
+        """
+        Updates an instance in the JSON file
+        based on the class name and id, updating
+        only one key-value pair, so any more key-value
+        pairs coming after first one will be ignored
+
+        Usage:
+            update <class name> <instance id> <attribute name> <value>
+
+        Pre-Conditions and Assumptions:
+            id, created_at, upated_at cannot't be passed as arguments
+            attribute value must be formatted as "<value>"
+            attribute name will always be existed (valid) for the instance
+        """
+        args = line.split()  # splitting by whitespace by default
+        if not args:
+            print("** class name missing **")
+            return
+
+        if args[0] not in ["BaseModel"]:
+            print("** class doesn't exist **")
+            return
+
+        if len(args) == 1:
+            print("** instance id missing **")
+            return
+
+        if len(args) == 2:
+            print("** attribute name missing **")
+            return
+
+        if len(args) == 3:
+            print("** value missing **")
+            return
+
+        try:
+            id_key = args[0] + '.' + args[1]
+            desired_obj = (storage.all())[id_key]
+        except KeyError:
+            print("** no instance found **")
+            return
+
+        setattr(desired_obj, args[2], (args[3])[1:-1])
+        desired_obj.save()
+
     def do_EOF(self, line):
         """
         Exiting the program by pressing Ctrl+D
