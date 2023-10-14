@@ -7,7 +7,6 @@ from models.base_model import BaseModel
 from models import storage
 
 
-
 class HBNBCommand(cmd.Cmd):
     """The main cmd of the program for testing and adminstrative purposes"""
 
@@ -88,11 +87,40 @@ class HBNBCommand(cmd.Cmd):
         try:
             id_key = args[0] + '.' + args[1]
             removing_obj = (storage.all())[id_key]
+            storage.destroy(removing_obj)
+            del removing_obj
         except KeyError:
             print("** no instance found **")
             return
 
-        storage.destroy(removing_obj)
+    def do_all(self, line):
+        """
+        Prints all string representation of all instances
+        based or not on the class name
+
+        Usage:
+            all
+            all <class name>
+        """
+        objs_list = []
+        args = line.split()  # splitting by whitespace by default
+        if args:
+            if args[0] in ["BaseModel"]:
+                class_name = args[0]
+                objs_dict = storage.all()
+                for key in objs_dict.keys():
+                    if objs_dict[key].__class__.__name__ == class_name:
+                        objs_list.append(str(objs_dict[key]))
+                print(objs_list)
+                return
+            else:
+                print("** class doesn't exist **")
+                return
+
+        objs_dict = storage.all()
+        for key in objs_dict.keys():
+            objs_list.append(str(objs_dict[key]))
+        print(objs_list)
 
     def do_EOF(self, line):
         """
