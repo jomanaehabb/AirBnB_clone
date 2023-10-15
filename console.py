@@ -4,6 +4,7 @@
 """
 import cmd
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 
 
@@ -25,11 +26,11 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        if args[0] not in ["BaseModel"]:
+        if args[0] not in ["BaseModel", "User"]:
             print("** class doesn't exist **")
             return
 
-        obj = BaseModel()
+        obj = eval(f"{args[0]}()")
         obj.save()
         print(obj.id)
 
@@ -46,7 +47,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        if args[0] not in ["BaseModel"]:
+        if args[0] not in ["BaseModel", "User"]:
             print("** class doesn't exist **")
             return
 
@@ -76,7 +77,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        if args[0] not in ["BaseModel"]:
+        if args[0] not in ["BaseModel", "User"]:
             print("** class doesn't exist **")
             return
 
@@ -105,7 +106,7 @@ class HBNBCommand(cmd.Cmd):
         objs_list = []
         args = line.split()  # splitting by whitespace by default
         if args:
-            if args[0] in ["BaseModel"]:
+            if args[0] in ["BaseModel", "User"]:
                 class_name = args[0]
                 objs_dict = storage.all()
                 for key in objs_dict.keys():
@@ -142,7 +143,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        if args[0] not in ["BaseModel"]:
+        if args[0] not in ["BaseModel", "User"]:
             print("** class doesn't exist **")
             return
 
