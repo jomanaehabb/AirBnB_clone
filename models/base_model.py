@@ -34,6 +34,11 @@ class BaseModel:
                 if key == "created_at" or key == "updated_at":
                     if value is not None:
                         setattr(self, key, datetime.fromisoformat(str(value)))
+                    else:
+                        raise TypeError("dates must be datetime")
+                    if key == "id":
+                        if value is None:
+                            raise TypeError("id must be str")
                 else:
                     setattr(self, key, value)
         else:
