@@ -3,8 +3,15 @@
     This module contains the entry point of the command interpreter
 """
 import cmd
+
 from models.base_model import BaseModel
 from models.user import User
+from models.place import Place
+from models.amenity import Amenity
+from models.state import State
+from models.city import City
+from models.review import Review
+
 from models import storage
 
 
@@ -15,7 +22,11 @@ class HBNBCommand(cmd.Cmd):
     class_dict = {
     "BaseModel": BaseModel,
     "User": User,
-    # Add more class mappings as needed
+    "Place": Place,
+    "Review": Review,
+    "Amenity": Amenity,
+    "State": State,
+    "City": City
 }
 
     def do_create(self, line):
