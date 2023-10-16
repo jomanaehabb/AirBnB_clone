@@ -3,6 +3,7 @@
     This module contains the entry point of the command interpreter
 """
 import cmd
+import copy
 
 from models.base_model import BaseModel
 from models.user import User
@@ -124,7 +125,7 @@ class HBNBCommand(cmd.Cmd):
         if args:
             if args[0] in HBNBCommand.class_dict.keys():
                 class_name = args[0]
-                objs_dict = storage.all()
+                objs_dict = copy.deepcopy(storage.all())
                 for key in objs_dict.keys():
                     if objs_dict[key].__class__.__name__ == class_name:
                         objs_list.append(str(objs_dict[key]))
@@ -134,7 +135,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
 
-        objs_dict = storage.all()
+        objs_dict = copy.deepcopy(storage.all())
         for key in objs_dict.keys():
             objs_list.append(str(objs_dict[key]))
         print(objs_list)
