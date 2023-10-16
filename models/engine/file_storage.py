@@ -48,21 +48,21 @@ class FileStorage:
         """
         from ..base_model import BaseModel
         from ..user import User
-        from..place import Place
-        from..amenity import Amenity
-        from..state import State
-        from..city import City
-        from..review import Review
-    
+        from ..place import Place
+        from ..amenity import Amenity
+        from ..state import State
+        from ..city import City
+        from ..review import Review
+
         class_dict = {
-        "BaseModel": BaseModel,
-        "User": User,
-        "Place": Place,
-        "Review": Review,
-        "Amenity": Amenity,
-        "State": State,
-        "City": City
-    }
+            "BaseModel": BaseModel,
+            "User": User,
+            "Place": Place,
+            "Review": Review,
+            "Amenity": Amenity,
+            "State": State,
+            "City": City
+        }
 
         try:
             with open(self.__file_path, "r") as f:

@@ -22,14 +22,14 @@ class HBNBCommand(cmd.Cmd):
 
     prompt = "(hbnb) "
     class_dict = {
-    "BaseModel": BaseModel,
-    "User": User,
-    "Place": Place,
-    "Review": Review,
-    "Amenity": Amenity,
-    "State": State,
-    "City": City
-}
+        "BaseModel": BaseModel,
+        "User": User,
+        "Place": Place,
+        "Review": Review,
+        "Amenity": Amenity,
+        "State": State,
+        "City": City
+    }
 
     def do_create(self, line):
         """
