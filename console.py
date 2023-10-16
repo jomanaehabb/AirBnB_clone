@@ -3,8 +3,17 @@
     This module contains the entry point of the command interpreter
 """
 import cmd
+import copy
+
 from models.base_model import BaseModel
 from models.user import User
+from models.place import Place
+from models.amenity import Amenity
+from models.state import State
+from models.city import City
+from models.review import Review
+
+
 from models import storage
 
 
@@ -12,6 +21,15 @@ class HBNBCommand(cmd.Cmd):
     """The main cmd of the program for testing and adminstrative purposes"""
 
     prompt = "(hbnb) "
+    class_dict = {
+    "BaseModel": BaseModel,
+    "User": User,
+    "Place": Place,
+    "Review": Review,
+    "Amenity": Amenity,
+    "State": State,
+    "City": City
+}
 
     def do_create(self, line):
         """
@@ -26,11 +44,11 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        if args[0] not in ["BaseModel", "User"]:
+        if args[0] not in HBNBCommand.class_dict.keys():
             print("** class doesn't exist **")
             return
 
-        obj = eval(f"{args[0]}()")
+        obj = HBNBCommand.class_dict[args[0]]()
         obj.save()
         print(obj.id)
 
@@ -47,7 +65,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        if args[0] not in ["BaseModel", "User"]:
+        if args[0] not in HBNBCommand.class_dict.keys():
             print("** class doesn't exist **")
             return
 
@@ -77,7 +95,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        if args[0] not in ["BaseModel", "User"]:
+        if args[0] not in HBNBCommand.class_dict.keys():
             print("** class doesn't exist **")
             return
 
@@ -106,9 +124,9 @@ class HBNBCommand(cmd.Cmd):
         objs_list = []
         args = line.split()  # splitting by whitespace by default
         if args:
-            if args[0] in ["BaseModel", "User"]:
+            if args[0] in HBNBCommand.class_dict.keys():
                 class_name = args[0]
-                objs_dict = storage.all()
+                objs_dict = copy.deepcopy(storage.all())
                 for key in objs_dict.keys():
                     if objs_dict[key].__class__.__name__ == class_name:
                         objs_list.append(str(objs_dict[key]))
@@ -118,7 +136,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
 
-        objs_dict = storage.all()
+        objs_dict = copy.deepcopy(storage.all())
         for key in objs_dict.keys():
             objs_list.append(str(objs_dict[key]))
         print(objs_list)
@@ -143,7 +161,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        if args[0] not in ["BaseModel", "User"]:
+        if args[0] not in HBNBCommand.class_dict.keys():
             print("** class doesn't exist **")
             return
 

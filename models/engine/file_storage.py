@@ -46,8 +46,23 @@ class FileStorage:
         Raises:
             FileNotFoundError: if the JSON file doesn't exist
         """
-
         from ..base_model import BaseModel
+        from ..user import User
+        from..place import Place
+        from..amenity import Amenity
+        from..state import State
+        from..city import City
+        from..review import Review
+    
+        class_dict = {
+        "BaseModel": BaseModel,
+        "User": User,
+        "Place": Place,
+        "Review": Review,
+        "Amenity": Amenity,
+        "State": State,
+        "City": City
+    }
 
         try:
             with open(self.__file_path, "r") as f:
@@ -56,7 +71,8 @@ class FileStorage:
             return
 
         for key, value in loaded_objs.items():
-            self.__objects[key] = BaseModel(**value)
+            class_name = value['__class__']
+            self.__objects[key] = class_dict[class_name](**value)
 
     def destroy(self, obj):
         """Removing a specific object permanently"""

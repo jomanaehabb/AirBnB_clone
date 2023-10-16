@@ -19,7 +19,6 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """
-
         initializing public instances with attributes
         necessary while creating objects, and save objects
         into JSON file once they are created fro the first time
@@ -31,16 +30,20 @@ class BaseModel:
         if kwargs:
             for key, value in kwargs.items():
                 if key == "__class__":
-                    pass
-                elif key == "created_at":
-                    self.created_at = datetime.fromisoformat(str(value))
-                elif key == "updated_at":
-                    self.updated_at = datetime.fromisoformat(str(value))
+                    continue
+                if key == "created_at" or key == "updated_at":
+                    if value is not None:
+                        setattr(self, key, datetime.fromisoformat(str(value)))
+                    else:
+                        raise TypeError("dates must be datetime")
+                    if key == "id":
+                        if value is None:
+                            raise TypeError("id must be str")
                 else:
                     setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
-            self.created_at = (datetime.now())
+            self.created_at = datetime.now()
             self.updated_at = self.created_at
             storage.new(self)
 
